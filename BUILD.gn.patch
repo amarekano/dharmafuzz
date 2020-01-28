@@ -1,0 +1,63 @@
+diff --git a/BUILD.gn b/BUILD.gn
+index cba1a4ef04..2527d415b8 100644
+--- a/BUILD.gn
++++ b/BUILD.gn
+@@ -294,7 +294,7 @@ config("libsampler_config") {
+ # This config should only be applied to code using V8 and not any V8 code
+ # itself.
+ config("external_config") {
+-  defines = []
++  defines = ["CUSTOM_MUTATOR"]
+   configs = [ ":v8_header_features" ]
+   if (is_component_build) {
+     defines += [ "USING_V8_SHARED" ]
+@@ -302,7 +302,18 @@ config("external_config") {
+   include_dirs = [
+     "include",
+     "$target_gen_dir/include",
++    "/usr/include/python3.6m",
+   ]
++
++  cflags = ["-Wno-error=unused-function"]
++}
++
++config("dharma_config") {
++  cflags = ["-Wno-error=unused-function"]
++  ldflags = [ 
++    "-lpython3.6m",
++    "-fsanitize=fuzzer"
++   ]
+ }
+ 
+ # This config should only be applied to code that needs to be explicitly
+@@ -4201,6 +4212,30 @@ v8_source_set("wasm_module_runner") {
+   ]
+ }
+ 
++v8_executable("v8_dharmafuzz") {
++    sources = [
++      "test/fuzzer/dharmafuzz.cc",
++      "test/fuzzer/python_bridge.cc",
++    ]
++
++    configs = [
++      # Note: don't use :internal_config here because this target will get
++      # the :external_config applied to it by virtue of depending on :v8, and
++      # you can't have both applied to the same target.
++      ":external_config",
++      ":dharma_config",
++      ":internal_config_base",
++    ]
++
++    deps = [
++      ":v8",
++      ":v8_libbase",
++      ":v8_libplatform",
++      "//build/win:default_exe_manifest",
++      ":fuzzer_support",
++    ]
++}
++
+ v8_source_set("wasm_fuzzer") {
+   sources = [
+     "test/fuzzer/wasm.cc",

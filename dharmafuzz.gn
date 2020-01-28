@@ -1,0 +1,18 @@
+# Set build arguments here. See `gn buildargs`.
+is_clang = true
+is_component_build = false
+is_debug =false
+target_cpu = "x64"
+symbol_level=1
+is_asan=true
+is_lsan=true
+use_libfuzzer=true
+use_sysroot = false
+use_cxx11 = true
+use_custom_libcxx = false
+#dcheck_always_on=true
+#v8_enable_slow_dchecks=true
+#v8_enable_v8_checks=true 
+#v8_enable_verify_heap=true 
+#v8_enable_verify_csa=true 
+#v8_enable_verify_predictable=true

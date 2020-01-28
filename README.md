@@ -8,3 +8,9 @@
 ## Running
 
 `PYTHONPATH=. LIBFUZZER_PYTHON_MODULE=pymodules.dharma_generator /home/amar/workspace/v8/out/dharmafuzz/v8_dharmafuzz --allow-natives-syntax --expose-gc corpus -rss_limit_mb=8510 -timeout=1200 -max_len=20480 -jobs=10000 -workers=12`
+
+## Refrences
+
+[dharma](https://github.com/MozillaSecurity/dharma)
+
+[libfuzzer-python-bridge](https://github.com/MozillaSecurity/libfuzzer-python-bridge)
